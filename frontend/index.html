@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>Todo App</title>
+  </head>
+  <body>
+    <button onclick="getTodos()">Click To See Todos</button>
+    <div id="todos"></div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      let todoList = [];
+      window.localStorage.setItem('flag', 0);
+
+      function search(nameKey, myArray) {
+        for (var i = 0; i < myArray.length; i++) {
+          if (myArray[i].name === nameKey) {
+            console.log(nameKey);
+            return myArray[i];
+          }
+        }
+
+        return 0;
+      }
+      const getTodos = () => {
+        axios
+          .get("http://localhost:3000/tasks/")
+          .then((response) => {
+            const todos = response.data;
+            if(window.localStorage.getItem('flag') == 1)
+              todoList = todos;
+
+            console.log(`GET todos`, todoList);
+
+            for (let i = 0; i < todos.length; i++) {
+              if (search(todos[i].name, todoList) != 0) continue;
+              todoList.push(todos[i]);
+              var div = document.getElementById("todos");
+              var p = document.createElement("p");
+              console.log(todos[i].name);
+              p.innerHTML = todos[i].name;
+              div.appendChild(p);
+              window.localStorage.setItem('flag', 1);
+            }
+          })
+          .catch((error) => console.error(error));
+      };
+    </script>
+  </body>
+</html>
