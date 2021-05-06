@@ -1,1 +1,5 @@
-# RESTFUL API
+<hr/>
+
+# RESTful API
+
+<hr/>
